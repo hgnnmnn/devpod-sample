@@ -1,0 +1,43 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/ubuntu
+{
+    "name": "terraform-dev-environment",
+    "image": "mcr.microsoft.com/devcontainers/base:jammy",
+    "features": {
+        "ghcr.io/devcontainers/features/terraform:1": {},
+        "ghcr.io/dhoeric/features/terraform-docs:1": {},
+        //"ghcr.io/devcontainers-extra/features/kind:1": {},
+        "ghcr.io/dhoeric/features/tfsec:1": {}
+    },
+    // mounting local aws configuration
+    "mounts": [
+        "source=${env:HOME}${env:USERPROFILE}/.aws,target=/home/vscode/.aws,type=bind"
+    ],
+    // a post create command to check the installed versions
+    "postCreateCommand": "terraform version && tfsec --version && terraform-docs --version",
+    // setting the default vsc addons and settings
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "hashicorp.terraform",
+                "tfsec.tfsec",
+                "oderwat.indent-rainbow",
+                "catppuccin.catppuccin-vsc",
+                "catppuccin.catppuccin-vsc-icons",
+                "continue.continue"
+            ],
+            "settings": {
+                "editor.formatOnSave": true,
+                "editor.trimTrailingWhitespace": true,
+                "files.trimTrailingWhitespace": true,
+                "files.insertFinalNewline": true,
+                "terraform.experimentalFeatures.validateOnSave": true,
+                "terraform.languageServer": {
+                    "enabled": true,
+                    "args": []
+                }
+            }
+        }
+    },
+    "remoteUser": "vscode"
+}

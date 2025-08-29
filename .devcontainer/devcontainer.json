@@ -1,43 +1,45 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the
 // README at: https://github.com/devcontainers/templates/tree/main/src/ubuntu
 {
-    "name": "terraform-dev-environment",
-    "image": "mcr.microsoft.com/devcontainers/base:jammy",
+    "name": "terraform-dev-environment", // Name of the development container environment
+    "image": "mcr.microsoft.com/devcontainers/base:jammy", // Base image for the container, using Ubuntu Jammy
     "features": {
-        "ghcr.io/devcontainers/features/terraform:1": {},
-        "ghcr.io/dhoeric/features/terraform-docs:1": {},
-        //"ghcr.io/devcontainers-extra/features/kind:1": {},
-        "ghcr.io/dhoeric/features/tfsec:1": {}
+        "ghcr.io/devcontainers/features/terraform:1": {}, // Adds Terraform CLI to the container
+        "ghcr.io/dhoeric/features/terraform-docs:1": {}, // Adds terraform-docs for generating documentation
+        //"ghcr.io/devcontainers-extra/features/kind:1": {}, // Uncomment to add Kubernetes IN Docker (kind)
+        "ghcr.io/dhoeric/features/tfsec:1": {} // Adds tfsec for Terraform security scanning
     },
     // mounting local aws configuration
     "mounts": [
-        "source=${env:HOME}${env:USERPROFILE}/.aws,target=/home/vscode/.aws,type=bind"
+        "source=${env:HOME}${env:USERPROFILE}/.aws,target=/home/vscode/.aws,type=bind" // Mounts local AWS credentials into the container
     ],
     // a post create command to check the installed versions
-    "postCreateCommand": "terraform version && tfsec --version && terraform-docs --version",
+    "postCreateCommand": "terraform version && tfsec --version && terraform-docs --version", // Verifies the installed tools after container setup
     // setting the default vsc addons and settings
     "customizations": {
         "vscode": {
             "extensions": [
-                "hashicorp.terraform",
-                "tfsec.tfsec",
-                "oderwat.indent-rainbow",
-                "catppuccin.catppuccin-vsc",
-                "catppuccin.catppuccin-vsc-icons",
-                "continue.continue"
+                "hashicorp.terraform", // Extension for Terraform language support
+                "tfsec.tfsec", // Extension for tfsec security scanning
+                "oderwat.indent-rainbow", // Adds color to indentation levels
+                "github.github-vscode-theme", // GitHub's official VS Code theme
+                "pkief.material-icon-theme", // Material Design icons for VS Code
+                "github.copilot-chat", // GitHub Copilot Chat for AI-powered assistance
+                "ugi-dev.better-commits", // Helps create better commit messages
+                "mhutchie.git-graph" // Visualizes Git repository history
             ],
             "settings": {
-                "editor.formatOnSave": true,
-                "editor.trimTrailingWhitespace": true,
-                "files.trimTrailingWhitespace": true,
-                "files.insertFinalNewline": true,
-                "terraform.experimentalFeatures.validateOnSave": true,
+                "editor.formatOnSave": true, // Automatically formats code on save
+                "editor.trimTrailingWhitespace": true, // Removes trailing whitespace on save
+                "files.trimTrailingWhitespace": true, // Ensures no trailing whitespace in files
+                "files.insertFinalNewline": true, // Adds a newline at the end of files
+                "terraform.experimentalFeatures.validateOnSave": true, // Validates Terraform files on save
                 "terraform.languageServer": {
-                    "enabled": true,
-                    "args": []
+                    "enabled": true, // Enables the Terraform language server
+                    "args": [] // Additional arguments for the language server (empty by default)
                 }
             }
         }
     },
-    "remoteUser": "vscode"
+    "remoteUser": "vscode" // Sets the default user in the container to vscode
 }

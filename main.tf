@@ -68,5 +68,3 @@ module "ec2_instance" {
     creator     = "${local.name}"
   }
 }
-
-
